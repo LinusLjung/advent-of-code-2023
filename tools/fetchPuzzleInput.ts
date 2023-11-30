@@ -1,4 +1,3 @@
-import path from 'path';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
@@ -18,7 +17,7 @@ if (!args.out) {
   throw new Error('Missing `--out` argument');
 }
 
-const session = await Bun.file(path.join(__dirname, args.session)).text();
+const session = await Bun.file(args.session).text();
 
 fetch(`https://adventofcode.com/2023/day/${args.day}/input`, {
   headers: {
@@ -27,5 +26,8 @@ fetch(`https://adventofcode.com/2023/day/${args.day}/input`, {
 })
   .then((response) => response.text())
   .then((input) => {
-    Bun.write(args.out, input);
+    return Bun.write(args.out, input);
+  })
+  .catch((e) => {
+    console.error(e);
   });
