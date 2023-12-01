@@ -13,4 +13,16 @@ describe('getNumbers()', () => {
       expect(getNumbers(input)).toBe(expected);
     }
   );
+
+  it.each([
+    ['two1nine', '29'],
+    ['eightwothree', '83'],
+    ['abcone2threexyz', '13'],
+    ['xtwone3four', '24'],
+    ['4nineeightseven2', '42'],
+    ['zoneight234', '14'],
+    ['7pqrstsixteen', '76'],
+  ])('should handle spelled out numbers, %s => %s', (input, expected) => {
+    expect(getNumbers(input, true)).toBe(expected);
+  });
 });

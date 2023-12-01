@@ -7,6 +7,9 @@ import path from 'path';
 const exampleInput = getInput(
   path.join(import.meta.dir, '../example-input.txt')
 );
+const exampleInput2 = getInput(
+  path.join(import.meta.dir, '../example-input2.txt')
+);
 const input = getInput(path.join(import.meta.dir, '../input.txt'));
 
 describe('part1()', () => {
@@ -17,5 +20,8 @@ describe('part1()', () => {
 });
 
 describe('part2()', () => {
-  it('should output the solution', () => {});
+  it('should output the solution', () => {
+    expect(part2(exampleInput2)).toBe(281);
+    expect(part2(input)).toBe(56324);
+  });
 });
