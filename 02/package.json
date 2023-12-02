@@ -1,0 +1,16 @@
+{
+  "name": "02",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "part1": "bun src/index.ts ./input.txt --part 1",
+    "part2": "bun src/index.ts ./input.txt --part 2",
+    "part1:example": "bun src/index.ts ./example-input.txt --part 1",
+    "part2:example": "bun src/index.ts ./example-input.txt --part 2",
+    "example": "bun src/index.ts ./example-input.txt"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {}
+}
