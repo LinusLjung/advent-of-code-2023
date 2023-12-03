@@ -1,7 +1,6 @@
 export type Match = [match: string, index: number];
 
-function getMatches(line: string): Match[] {
-  const regex = /[0-9]+/g;
+function getMatches(line: string, regex = /[0-9]+/g): Match[] {
   let match: ReturnType<typeof regex.exec> = null;
 
   const matches: Match[] = [];
