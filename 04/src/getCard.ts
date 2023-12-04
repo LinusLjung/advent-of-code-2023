@@ -1,3 +1,4 @@
+import { getDuplicates } from 'getDuplicates';
 import { Card } from 'types';
 
 export function getCard(line: string): Card {
@@ -12,5 +13,10 @@ export function getCard(line: string): Card {
         .map(Number)
     );
 
-  return { name, numbers, winningNumbers };
+  return {
+    name,
+    numbers,
+    winningNumbers,
+    duplicates: getDuplicates(numbers, winningNumbers),
+  };
 }

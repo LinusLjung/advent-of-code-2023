@@ -3,21 +3,22 @@ import { getDuplicates } from 'getDuplicates';
 
 export function part2(input: string) {
   const lines = input.split('\n');
-  const stack = lines.map(getCard).map((card, i) => ({ ...card, index: i }));
+  const cards = lines.map(getCard).map((card, i) => ({
+    ...card,
+    index: i,
+  }));
 
-  let i = 0;
+  const cardCount = cards.map(() => 1);
 
-  do {
-    const card = stack[i];
-    const numberOfDuplicates = getDuplicates(
-      card.numbers,
-      card.winningNumbers
-    ).length;
+  for (const card of cards) {
+    for (
+      let i = card.index + 1;
+      i <= card.index + card.duplicates.length;
+      i++
+    ) {
+      cardCount[i] += cardCount[card.index];
+    }
+  }
 
-    stack.push(
-      ...stack.slice(card.index + 1, card.index + numberOfDuplicates + 1)
-    );
-  } while (++i < stack.length);
-
-  return stack.length;
+  return cardCount.reduce((acc, curr) => acc + curr);
 }
