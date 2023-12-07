@@ -6,7 +6,7 @@ type Hand = {
   bet: number;
 };
 
-function getHandValues(hand: string) {
+function getHandValues(hand: string, withJokers = false) {
   return hand.split('').map((card) => {
     const number = Number(card);
 
@@ -22,7 +22,7 @@ function getHandValues(hand: string) {
       case 'Q':
         return 12;
       case 'J':
-        return 11;
+        return withJokers ? 1 : 11;
       case 'T':
         return 10;
     }
@@ -31,7 +31,7 @@ function getHandValues(hand: string) {
   });
 }
 
-function sortHandsByRank(hands: Hand[]) {
+function sortHandsByRank(hands: Hand[], withJokers = false) {
   return hands.toSorted((a, b) => {
     if (a.rank < b.rank) {
       return 1;
@@ -41,8 +41,8 @@ function sortHandsByRank(hands: Hand[]) {
       return -1;
     }
 
-    const aValues = getHandValues(a.hand);
-    const bValues = getHandValues(b.hand);
+    const aValues = getHandValues(a.hand, withJokers);
+    const bValues = getHandValues(b.hand, withJokers);
 
     for (let i = 0; i < aValues.length; i++) {
       if (aValues[i] === bValues[i]) {
@@ -56,11 +56,11 @@ function sortHandsByRank(hands: Hand[]) {
   });
 }
 
-export function part1(input: string) {
+export function part1(input: string, withJokers = false) {
   const hands = input.split('\n').map<Hand>((line) => {
     let [hand, betString] = line.split(' ');
 
-    const rank = getHandRank(hand);
+    const rank = getHandRank(hand, withJokers);
 
     return {
       hand,
@@ -69,7 +69,7 @@ export function part1(input: string) {
     };
   });
 
-  const sortedHands = sortHandsByRank(hands);
+  const sortedHands = sortHandsByRank(hands, withJokers);
 
   const winnings = sortedHands.map((hand, i) => {
     return hand.bet * (i + 1);

@@ -8,25 +8,62 @@ export const ranks = {
   highCard: 6,
 } as const;
 
-function allCardsAreSame(cards: string[]) {
-  return cards.filter((card) => card === cards[0]).length === cards.length;
+function allCardsAreSame(cards: string[], withJokers = false) {
+  let cardToTest: string | null = null;
+
+  if (withJokers) {
+    return allCardsAreSame(cards.filter((card) => card !== 'J'));
+  }
+
+  for (let i = 0; i < cards.length - 1; i++) {
+    if (cards[i] !== cards[i + 1]) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
-function isFiveOfAKind(hand: string) {
-  return allCardsAreSame(hand.split(''));
+function isFiveOfAKind(hand: string, withJokers = false) {
+  return allCardsAreSame(hand.split(''), withJokers);
 }
 
-function isFourOfAKind(hand: string) {
+function isFourOfAKind(hand: string, withJokers = false) {
   const handArray = hand.split('').toSorted();
 
+  if (withJokers) {
+    const jokerCount = handArray.filter((card) => card === 'J').length;
+    const filteredCards = handArray.filter((card) => card !== 'J').join('');
+
+    if (jokerCount === 2) {
+      return isPair(filteredCards);
+    }
+
+    if (jokerCount === 1) {
+      return isThreeOfAKind(filteredCards);
+    }
+  }
+
   return (
-    allCardsAreSame(handArray.slice(0, 4)) ||
-    allCardsAreSame(handArray.slice(1))
+    allCardsAreSame(handArray.slice(0, 4), withJokers) ||
+    allCardsAreSame(handArray.slice(-4), withJokers)
   );
 }
 
-function isThreeOfAKind(hand: string) {
+function isThreeOfAKind(hand: string, withJokers = false) {
   const handArray = hand.split('').toSorted();
+
+  if (withJokers && handArray.includes('J')) {
+    const jokerCount = handArray.filter((card) => card === 'J').length;
+
+    if (jokerCount === 2) {
+      return true;
+    }
+
+    if (jokerCount === 1) {
+      return isPair(handArray.filter((card) => card !== 'J').join(''));
+    }
+  }
 
   for (let i = 0; i < hand.length - 2; i++) {
     if (allCardsAreSame(handArray.slice(i, i + 3))) {
@@ -37,11 +74,11 @@ function isThreeOfAKind(hand: string) {
   return false;
 }
 
-function isPair(hand: string) {
+function isPair(hand: string, withJokers = false) {
   const handArray = hand.split('').toSorted();
 
   for (let i = 0; i < hand.length - 1; i++) {
-    if (allCardsAreSame(handArray.slice(i, i + 2))) {
+    if (allCardsAreSame(handArray.slice(i, i + 2), withJokers)) {
       return true;
     }
   }
@@ -49,10 +86,14 @@ function isPair(hand: string) {
   return false;
 }
 
-function isFullHouse(hand: string) {
+function isFullHouse(hand: string, withJokers = false) {
   const handArray = hand.split('').toSorted();
   const firstPair = handArray.slice(0, 2);
   const lastPair = handArray.slice(-2);
+
+  if (withJokers && handArray.includes('J')) {
+    return isTwoPair(handArray.filter((card) => card !== 'J').join(''));
+  }
 
   if (!allCardsAreSame(firstPair)) {
     return false;
@@ -69,40 +110,55 @@ function isFullHouse(hand: string) {
   return true;
 }
 
-function isTwoPair(hand: string) {
+function isTwoPair(hand: string, withJokers = false) {
   const handArray = hand.split('').toSorted();
-  const [firstHalf, lasthalf] = [
-    handArray.slice(0, 3).join(''),
-    handArray.slice(2).join(''),
-  ];
+  let hasPair = false;
 
-  return isPair(firstHalf) && isPair(lasthalf);
+  if (withJokers && handArray.includes('J')) {
+    if (isPair(hand)) {
+      return true;
+    }
+  }
+
+  for (let i = 0; i < handArray.length - 1; i++) {
+    if (handArray[i] === handArray[i + 1]) {
+      i++;
+
+      if (hasPair) {
+        return true;
+      }
+
+      hasPair = true;
+    }
+  }
+
+  return false;
 }
 
 export type RankType = (typeof ranks)[keyof typeof ranks];
 
-export function getHandRank(hand: string): RankType {
-  if (isFiveOfAKind(hand)) {
+export function getHandRank(hand: string, withJokers = false): RankType {
+  if (isFiveOfAKind(hand, withJokers)) {
     return ranks.fiveOfAKind;
   }
 
-  if (isFourOfAKind(hand)) {
+  if (isFourOfAKind(hand, withJokers)) {
     return ranks.fourOfAKind;
   }
 
-  if (isFullHouse(hand)) {
+  if (isFullHouse(hand, withJokers)) {
     return ranks.fullHouse;
   }
 
-  if (isThreeOfAKind(hand)) {
+  if (isThreeOfAKind(hand, withJokers)) {
     return ranks.threeOfAKind;
   }
 
-  if (isTwoPair(hand)) {
+  if (isTwoPair(hand, withJokers)) {
     return ranks.twoPair;
   }
 
-  if (isPair(hand)) {
+  if (isPair(hand, withJokers)) {
     return ranks.onePair;
   }
 
