@@ -1,4 +1,4 @@
-export function calculateRow(values: number[]) {
+export function calculateRow(values: number[], prefill = false) {
   let rows: number[][] = [values];
 
   do {
@@ -14,6 +14,11 @@ export function calculateRow(values: number[]) {
 
   let extrapolated = 0;
   for (let i = rows.length - 2; i >= 0; i--) {
+    if (prefill) {
+      extrapolated = rows[i][0] - extrapolated;
+      continue;
+    }
+
     extrapolated += rows[i].at(-1)!;
   }
 

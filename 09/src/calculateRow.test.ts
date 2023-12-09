@@ -9,4 +9,12 @@ describe('calculateRow()', () => {
   ])('should return the extrapolated value', (input, expected) => {
     expect(calculateRow(input)).toBe(expected);
   });
+
+  it.each<[number[], number]>([
+    [[0, 3, 6, 9, 12, 15], -3],
+    [[1, 3, 6, 10, 15, 21], 0],
+    [[10, 13, 16, 21, 30, 45], 5],
+  ])('should handle prefill', (input, expected) => {
+    expect(calculateRow(input, true)).toBe(expected);
+  });
 });
