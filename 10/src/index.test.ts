@@ -10,6 +10,12 @@ const exampleInput = getInput(
 const exampleInput2 = getInput(
   path.join(import.meta.dir, '../example-input-2.txt')
 );
+const exampleInput3 = getInput(
+  path.join(import.meta.dir, '../example-input-3.txt')
+);
+const exampleInput4 = getInput(
+  path.join(import.meta.dir, '../example-input-4.txt')
+);
 const input = getInput(path.join(import.meta.dir, '../input.txt'));
 
 describe('part1()', () => {
@@ -22,6 +28,8 @@ describe('part1()', () => {
 
 describe('part2()', () => {
   it('should output the solution', () => {
+    expect(part2(exampleInput3)).toBe(4);
+    expect(part2(exampleInput4)).toBe(1);
     expect(part2(input)).toBe(417);
   });
 });

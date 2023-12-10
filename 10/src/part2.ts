@@ -24,17 +24,39 @@ export function part2(input: string) {
     }
   }
 
-  // Cheesy reddit solution
-  const lx = grid[0].length / 4;
-  const ly = grid.length / 4;
+  let enclosedCounter = 0;
 
-  return grid
-    .slice(ly, -ly)
-    .map((line, y) => {
-      return line
-        .slice(lx, -lx)
-        .filter((node, x) => !visitedNodes.includes([y + ly, x + lx].join()))
-        .length;
-    })
-    .reduce((acc, curr) => acc + curr);
+  for (let y = 0; y < grid.length; y++) {
+    let crossingCounter = 0;
+
+    for (let x = 0; x < grid[y].length; x++) {
+      const visitedIndex = visitedNodes.indexOf([y, x].join());
+
+      if (visitedIndex === -1) {
+        if (crossingCounter !== 0) {
+          enclosedCounter++;
+        }
+
+        continue;
+      }
+
+      const previousNode =
+        visitedNodes[
+          (visitedNodes.length + visitedIndex - 1) % visitedNodes.length
+        ];
+
+      if (previousNode === [y + 1, x].join()) {
+        crossingCounter++;
+      }
+
+      if (
+        visitedNodes[(visitedIndex + 1) % visitedNodes.length] ===
+        [y + 1, x].join()
+      ) {
+        crossingCounter--;
+      }
+    }
+  }
+
+  return enclosedCounter;
 }
