@@ -42,7 +42,7 @@ function findEmptyColumns(grid: Grid<string>): number[] {
   return findEmptyRows(flippedGrid);
 }
 
-export function part1(input: string) {
+export function part1(input: string, distanceMultiplier?: number) {
   const grid = input.split('\n').map((line) => line.split(''));
   const galaxies = findGalaxies(grid);
   const emptyRows = findEmptyRows(grid);
@@ -52,7 +52,13 @@ export function part1(input: string) {
   for (let i = 0; i < galaxies.length; i++) {
     for (let j = i + 1; j < galaxies.length; j++) {
       const galaxy = galaxies[i];
-      const pair = getPair(galaxy, galaxies[j], emptyRows, emptyColumns);
+      const pair = getPair(
+        galaxy,
+        galaxies[j],
+        emptyRows,
+        emptyColumns,
+        distanceMultiplier
+      );
 
       pairs.push(pair);
     }

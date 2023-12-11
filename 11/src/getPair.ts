@@ -4,7 +4,8 @@ export function getPair(
   galaxy1: Coord,
   galaxy2: Coord,
   emptyRows: number[],
-  emptyColumns: number[]
+  emptyColumns: number[],
+  distanceMultiplier = 2
 ): Pair {
   const y1 = galaxy1[0];
   const y2 = galaxy2[0];
@@ -18,13 +19,13 @@ export function getPair(
 
   for (const row of emptyRows) {
     if (row > ySpan[0] && row < ySpan[1]) {
-      yDistance++;
+      yDistance += 1 * distanceMultiplier - 1;
     }
   }
 
   for (const column of emptyColumns) {
     if (column > xSpan[0] && column < xSpan[1]) {
-      xDistance++;
+      xDistance += 1 * distanceMultiplier - 1;
     }
   }
 
