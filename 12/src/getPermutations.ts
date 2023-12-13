@@ -27,9 +27,11 @@ export function getPermutations(
   let match: ReturnType<typeof regex.exec> = null;
 
   const matches: string[] = [];
-  let i = 0;
 
-  while ((match = regex.exec(subSprings.slice(startIndex)))) {
+  const springsToSearch = subSprings.slice(startIndex);
+
+  while ((match = regex.exec(springsToSearch))) {
+    console.time('b');
     regex.lastIndex = match.index + 1;
 
     if (!rest.length) {
