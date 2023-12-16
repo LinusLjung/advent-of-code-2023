@@ -1,0 +1,31 @@
+import getInput from '@/getInput';
+import { describe, expect, it } from 'bun:test';
+import { part1 } from 'part1';
+import path from 'path';
+
+const exampleInput = getInput(
+  path.join(import.meta.dir, '../example-input.txt')
+);
+
+const exampleInput2 = getInput(
+  path.join(import.meta.dir, '../example-input-2.txt')
+);
+
+const exampleInput3 = getInput(
+  path.join(import.meta.dir, '../example-input-3.txt')
+);
+
+const input = getInput(path.join(import.meta.dir, '../input.txt'));
+
+describe('part1()', () => {
+  it('should output the solution', () => {
+    expect(part1(exampleInput)).toBe(46);
+    expect(part1(exampleInput2)).toBe(9);
+    expect(part1(exampleInput3)).toBe(4);
+    expect(part1(input)).not.toBe(64);
+  });
+});
+
+describe.skip('part2()', () => {
+  it('should output the solution', () => {});
+});
