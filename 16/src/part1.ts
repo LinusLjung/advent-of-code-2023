@@ -1,30 +1,48 @@
-type Grid = string[][];
+import { Grid } from 'types';
+
 type Direction = 'N' | 'E' | 'S' | 'W';
 type Coord = [y: number, x: number];
-type VisitedCell = [...Coord, direction: Direction];
+// type Grid = [...Coord, direction: Direction];
 
 type Beam = [...Coord, direction: Direction];
 
-function beamShouldBreak(beam: Beam, grid: Grid, visited: VisitedCell[]) {
+function beamShouldBreak(beam: Beam, grid: Grid, visited: Grid<string[]>) {
   return (
-    !grid[beam[0]]?.[beam[1]] ||
-    visited.some(
-      (cell) =>
-        cell[0] === beam[0] && cell[1] === beam[1] && cell[2] === beam[2]
-    )
+    !grid[beam[0]]?.[beam[1]] || visited[beam[0]]?.[beam[1]].includes(beam[2])
   );
 }
 
-export function part1(input: string) {
-  const visited: VisitedCell[] = [];
+function getGrid<T>(
+  rows: number,
+  columns: number,
+  fill: (y: number, x: number) => T
+) {
+  const grid: Grid<T> = [];
+
+  for (let y = 0; y < rows; y++) {
+    grid.push([]);
+
+    for (let x = 0; x < columns; x++) {
+      grid[y].push(fill(y, x));
+    }
+  }
+
+  return grid;
+}
+
+export function part1(input: string, startBeam: Beam = [0, 0, 'E']) {
   const grid: Grid = input.split('\n').map((line) => line.split(''));
-  let beams: Beam[] = [[0, 0, 'E']];
+  const visited: Grid<string[]> = getGrid(
+    grid.length,
+    grid[0].length,
+    () => []
+  );
+  let beams: Beam[] = [startBeam];
 
   while (beams.length) {
     beams = beams.filter((beam) => !beamShouldBreak(beam, grid, visited));
-
     for (const beam of beams) {
-      visited.push([...beam]);
+      visited[beam[0]][beam[1]].push(beam[2]);
 
       const visitedCell = grid[beam[0]]?.[beam[1]];
 
@@ -104,11 +122,16 @@ export function part1(input: string) {
     }
   }
 
-  return visited.reduce<typeof visited>((acc, curr) => {
-    if (acc.some((v) => v[0] === curr[0] && v[1] === curr[1])) {
-      return acc;
-    }
+  return visited.reduce<number>((acc, curr) => {
+    return (
+      acc +
+      curr.reduce((acc, curr) => {
+        if (curr.length) {
+          return acc + 1;
+        }
 
-    return [...acc, curr];
-  }, []).length;
+        return acc;
+      }, 0)
+    );
+  }, 0);
 }
