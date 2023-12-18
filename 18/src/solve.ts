@@ -86,14 +86,14 @@ function dig(start: Coord, direction: Direction, length: number) {
 }
 
 export function solve(instructions: Instruction[]) {
-  const trench: Coord[] = [];
+  let trench: Coord[] = [];
 
   const [lowerY, lowerX] = getLowerEdge(instructions);
 
   let previous: Coord = [-lowerY, -lowerX];
 
   instructions.forEach(({ direction, digLength }) => {
-    trench.push(...dig(previous, direction, digLength));
+    trench = trench.concat(dig(previous, direction, digLength));
     previous = trench.at(-1)!;
   });
 
