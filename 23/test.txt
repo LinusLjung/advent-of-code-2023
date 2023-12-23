@@ -1,0 +1,95 @@
+current {
+  distance: 15,
+  coord: [ 5, 3 ],
+  previous: {
+    distance: 14,
+    coord: [ 4, 3 ],
+    previous: {
+      distance: 13,
+      coord: [ 3, 3 ],
+      previous: {
+        distance: 12,
+        coord: [ 3, 4 ],
+        previous: {
+          distance: 11,
+          coord: [ 3, 5 ],
+          previous: {
+            distance: 10,
+            coord: [ 3, 6 ],
+            previous: {
+              distance: 9,
+              coord: [ 3, 7 ],
+              previous: {
+                distance: 8,
+                coord: [ 2, 7 ],
+                previous: {
+                  distance: 7,
+                  coord: [ 1, 7 ],
+                  previous: [Object ...],
+                  isVisited: true,
+                  type: "."
+                },
+                isVisited: true,
+                type: "."
+              },
+              isVisited: true,
+              type: "."
+            },
+            isVisited: true,
+            type: "."
+          },
+          isVisited: true,
+          type: "."
+        },
+        isVisited: true,
+        type: "."
+      },
+      isVisited: true,
+      type: "."
+    },
+    isVisited: true,
+    type: "v"
+  },
+  isVisited: false,
+  type: "."
+}
+neighbours [
+  {
+    distance: -Infinity,
+    coord: [ 6, 3 ],
+    previous: null,
+    isVisited: false,
+    type: "v"
+  }, {
+    distance: -Infinity,
+    coord: [ 5, 4 ],
+    previous: null,
+    isVisited: false,
+    type: ">"
+  }
+]
+#O#####################
+#OOOOOOO#########...###
+#######O#########.#.###
+###OOOOO#.>.>.###.#.###
+###O#####.#v#.###.#.###
+###O>...#.#.#.....#...#
+###O###.#.#.#########.#
+###OOO#.#.#.......#...#
+#####O#.#.#######.#.###
+#OOOOO#.#.#.......#...#
+#O#####.#.#.#########v#
+#O#OOO#...#...###...>.#
+#O#O#O#######v###.###v#
+#OOO#O>.#...>.>.#.###.#
+#####O#.#.###v#.#.###.#
+#OOOOO#...#...#.#.#...#
+#O#########.###.#.#.###
+#OOO###OOO#...#...#.###
+###O###O#O###v#####v###
+#OOO#OOO#O#OOOOO#OOO###
+#O###O###O#O###O#O#O###
+#OOOOO###OOO###OOO#OOO#
+#####################.#
+target.distance 90
+90
