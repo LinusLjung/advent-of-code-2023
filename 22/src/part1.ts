@@ -11,7 +11,10 @@ export function part1(input: string) {
           .split('~')
           .map((coord) => coord.split(',').map(Number)) as BlockCoords
     )
-    .map((coords) => getBlock(coords));
+    .map((coords) => getBlock(coords))
+    .sort((a, b) => {
+      return a[1][2] - b[1][2];
+    });
 
   console.time('a');
   while (tick(blocks));
@@ -25,7 +28,7 @@ export function part1(input: string) {
       tick(
         blocks.filter((b) => b !== block),
         true,
-        true,
+        true
       )
     ) {
       continue;
